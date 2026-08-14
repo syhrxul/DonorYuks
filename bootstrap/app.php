@@ -16,7 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // API murni: jangan redirect tamu (guest) ke route 'login' yang tidak
+        // terdaftar. AuthenticationException tetap dilempar dan diformat
+        // menjadi respons JSON 401 oleh handler exception di bawah.
+        $middleware->redirectGuestsTo(fn (Request $request) => $request->expectsJson() || $request->is('api/*')
+            ? null
+            : route('login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
