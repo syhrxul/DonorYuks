@@ -8,7 +8,6 @@ RUN apk add --no-cache \
     && docker-php-ext-install -j"$(nproc)" \
         pdo_mysql \
         mbstring \
-    && docker-php-ext-enable opcache \
     && apk del $PHPIZE_DEPS
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
