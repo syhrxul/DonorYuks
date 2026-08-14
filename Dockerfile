@@ -1,20 +1,13 @@
 FROM php:8.3-fpm-alpine
 
 RUN apk add --no-cache \
-        libzip-dev \
-        icu-dev \
         oniguruma-dev \
         curl-dev \
+        libxml2-dev \
         $PHPIZE_DEPS \
     && docker-php-ext-install -j"$(nproc)" \
         pdo_mysql \
-        mysqli \
         mbstring \
-        intl \
-        zip \
-        bcmath \
-        exif \
-        pcntl \
     && docker-php-ext-enable opcache \
     && apk del $PHPIZE_DEPS
 
